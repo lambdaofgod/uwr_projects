@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{blindtext}
+
+\title{Information Theory for Neural Network Regularization}
+\author{Jakub Bartczuk}
+\date{June 2020}
+
+
+\newcommand{\loss}{\mathcal{L}}
+\begin{document}
+\maketitle
+
+\section{Introduction}
+
+Learning neural networks for supervised learning is commonly formalized as optimizing log loss
+
+$$\loss = E_{(x,y) \sim p}[log\, p_\theta(y|x)] \approx \frac{1}{N} \sum_i log\, p_\theta(y_i|x_i) $$
+
+When model, $p_\theta$ is a complicated function there is risk of overfitting - the model might learn useless features that do not generalize from training set. 
+
+To address that problem, most neural network use some form of \textit{regularization}. Regularization is performed by applying some procedure to neural network outputs or by optimizing $\loss' = \loss + P$ where $P$ is some penalty.
+
+Usual regularization methods are based on injecting noise - be it in explicit form of dropout (zeroing in activations of intermediate layers) or implicit in the form of weight decay (it is a known fact that for linear models L2 weight decay is equivalent to assuming a prior normal distribution on weights which is in turn equivalent to adding gaussian noise).
+
+\section{Information theory and supervised learning}
+
+Log loss has natural information theoretic interpretation: $\loss = - H(p) - KL(p_{\theta}|p)$, so optimizing w.r.t $p_{\theta}$ means minimizing KL divergence between model and true probability. 
+
+It is an empirical fact that when overfitting often manifests in model being overly confident of its predictions. This is because $L$ only measures error for true class $y_i$ and discards information about other classes.
+
+In practice the problem of model being overly confident is commonly solved by using \textit{label smoothing} which turns one-hot encoded vector $y_i$ that represents indicator function for appropriate class into vector which has some nonzero probabilities for other classes. 
+
+\subsection{Regularizing Neural Networks by Penalizing Confident Output Distributions}
+
+Less known method that is based on information-theoretic interpretation is penalizing confident distributions from \cite{penalizing}. Distribution confidence is measured using entropy.In this method becomes $\loss'$
+
+$$\loss' = E_{(x,y) \sim p}[log\, p_\theta(y|x)] + \lambda H(p_\theta(y|x))$$
+
+\section{Information Bottleneck}
+
+
+\begin{thebibliography}{9}
+\bibitem{penalizing}
+  Gabriel Pereyra, George Tucker, Jan Chorowski, Łukasz Kaiser, Geoffrey Hinton,
+  Leslie Lamport,
+  \textit{Regularizing Neural Networks by Penalizing Confident Output Distributions},
+  2017.
+
+\end{thebibliography}
+
+\end{document}
