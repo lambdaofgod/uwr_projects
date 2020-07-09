@@ -1,0 +1,17 @@
+- model: information_regularization
+  operations:
+    train_model:
+        main: information_regularization/information_regularization
+        requires:
+            - file: data
+        sourcecode:
+            root: information_regularization 
+        output-scalars:
+            accuracy: 'accuracy: (\value)'
+            loss: 'loss: (\value)'
+            log_loss: 'log_loss: (\value)'
+            kl_loss: 'kl_loss: (\value)'
+    resources:
+        model:
+            sources:
+                - operation: train_model
