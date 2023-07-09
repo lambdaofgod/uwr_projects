@@ -1,0 +1,12 @@
+nbdev
+scikit-learn
+pandas
+streamlit
+kaggle
+tqdm
+seaborn
+attr
+pydot
+graphviz
+altair
+umap-learn
